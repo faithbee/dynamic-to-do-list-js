@@ -1,49 +1,48 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // Select DOM elements
-    const addButton = document.getElementById("add-task-btn");
-    const taskInput = document.getElementById("task-input");
-    const taskList = document.getElementById("task-list");
+const input = document.querySelector("#taskInput");
+const addButton = document.querySelector("#addTask");
+const taskList = document.querySelector("#taskList");
 
-    // Function to add a new task
-    function addTask() {
-        // Get and trim the input value
-        const taskText = taskInput.value.trim();
+// Add task on button click
+addButton.addEventListener("click", () => {
+  const taskText = input.value.trim();
 
-        // If input is empty, alert the user
-        if (taskText === "") {
-            alert("Please enter a task!");
-            return;
-        }
+  if (taskText !== "") {
+    // Create new list item
+    const li = document.createElement("li");
+    li.textContent = taskText;
 
-        // Create a new list item (li)
-        const li = document.createElement("li");
-        li.textContent = taskText;
+    // Add a CSS class for styling
+    li.classList.add("task-item");
 
-        // Create a remove button
-        const removeBtn = document.createElement("button");
-        removeBtn.textContent = "Remove";
-        removeBtn.className = "remove-btn";
-
-        // Add click event to remove button
-        removeBtn.onclick = () => {
-            taskList.removeChild(li);
-        };
-
-        // Append the button to li, then li to the task list
-        li.appendChild(removeBtn);
-        taskList.appendChild(li);
-
-        // Clear input field
-        taskInput.value = "";
-    }
-
-    // Add task when button is clicked
-    addButton.addEventListener("click", addTask);
-
-    // Add task when "Enter" key is pressed inside input
-    taskInput.addEventListener("keypress", (event) => {
-        if (event.key === "Enter") {
-            addTask();
-        }
+    // Add a 'completed' toggle on click
+    li.addEventListener("click", () => {
+      li.classList.toggle("completed");
     });
+
+    // Append to the task list
+    taskList.appendChild(li);
+
+    // Clear input
+    input.value = "";
+  }
 });
+🔑 Key points
+li.classList.add("task-item") → gives each new task a default style.
+
+li.classList.toggle("completed") → lets you click to mark as done (strikethrough, gray, etc.).
+
+Example CSS (styles.css)
+css
+Copy code
+.task-item {
+  padding: 8px;
+  margin: 5px 0;
+  background: #f1f1f1;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.task-item.completed {
+  text-decoration: line-through;
+  color: gray;
+}
