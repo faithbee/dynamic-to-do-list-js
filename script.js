@@ -1,48 +1,35 @@
-const input = document.querySelector("#taskInput");
-const addButton = document.querySelector("#addTask");
-const taskList = document.querySelector("#taskList");
+document.addEventListener("DOMContentLoaded", function () {
+    const taskInput = document.getElementById("taskInput");
+    const addTaskBtn = document.getElementById("addTaskBtn");
+    const taskList = document.getElementById("taskList");
 
-// Add task on button click
-addButton.addEventListener("click", () => {
-  const taskText = input.value.trim();
+    // Add new task
+    addTaskBtn.addEventListener("click", function () {
+        const taskText = taskInput.value.trim();
+        if (taskText === "") return;
 
-  if (taskText !== "") {
-    // Create new list item
-    const li = document.createElement("li");
-    li.textContent = taskText;
+        // Create <li>
+        const li = document.createElement("li");
+        li.textContent = taskText;
+        li.classList.add("task-item"); // ✅ required
 
-    // Add a CSS class for styling
-    li.classList.add("task-item");
+        // Toggle completed state
+        li.addEventListener("click", function () {
+            li.classList.toggle("completed");
+        });
 
-    // Add a 'completed' toggle on click
-    li.addEventListener("click", () => {
-      li.classList.toggle("completed");
+        // Delete button
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "❌";
+        deleteBtn.classList.add("delete-btn");
+        deleteBtn.addEventListener("click", function () {
+            li.remove();
+        });
+
+        li.appendChild(deleteBtn);
+        taskList.appendChild(li);
+
+        // Reset input
+        taskInput.value = "";
     });
-
-    // Append to the task list
-    taskList.appendChild(li);
-
-    // Clear input
-    input.value = "";
-  }
 });
-🔑 Key points
-li.classList.add("task-item") → gives each new task a default style.
-
-li.classList.toggle("completed") → lets you click to mark as done (strikethrough, gray, etc.).
-
-Example CSS (styles.css)
-css
-Copy code
-.task-item {
-  padding: 8px;
-  margin: 5px 0;
-  background: #f1f1f1;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.task-item.completed {
-  text-decoration: line-through;
-  color: gray;
-}
